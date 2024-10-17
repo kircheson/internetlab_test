@@ -1,0 +1,56 @@
+version: "3.6"
+
+services:
+    internetlab-db:
+        image: mysql:8.0.33
+        container_name: internetlab-db
+        volumes:
+            - "./db_app:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        ports:
+            - ${DB_PORT}:3306
+        env_file:
+            - ./.env
+        networks:
+            - symfony_app
+    internetlab-php:
+        build:
+            context: ./php
+        container_name: internetlab-php
+        volumes:
+            - ../:/var/www/symfony:cached
+            - ../var:/var/www/symfony/var
+            - ../vendor:/var/www/symfony/vendor
+        depends_on:
+            - internetlab-db
+        networks:
+            - symfony_app
+        ports:
+            - 8088:8088
+
+    internetlab-nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        container_name: internetlab-nginx
+        volumes:
+            - ../:/var/www/symfony:cached
+            - ../var:/var/www/symfony/var
+            - ../vendor:/var/www/symfony/vendor
+        ports:
+            - ${PORT}:80
+        depends_on:
+            - internetlab-php
+        networks:
+            - symfony_app
+
+networks:
+    symfony_app:
+        driver: bridge
+
+volumes:
+  db_app:
