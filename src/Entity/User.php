@@ -16,13 +16,9 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank(message: "Email не должен быть пустым")]
-    #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
     private string $email;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Password не должен быть пустым")]
-    #[Assert\Length(min: 6, minMessage: "Password must be at least {{ limit }} characters long.")]
     private string $password;
 
     public function getId(): ?int

@@ -15,7 +15,8 @@
         "symfony/framework-bundle": "7.1.*",
         "symfony/runtime": "7.1.*",
         "symfony/validator": "7.1.*",
-        "symfony/yaml": "7.1.*"
+        "symfony/yaml": "7.1.*",
+        "twig/twig": "*"
     },
     "config": {
         "allow-plugins": {
@@ -65,5 +66,8 @@
             "allow-contrib": false,
             "require": "7.1.*"
         }
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.23"
     }
 }
